@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        var clothes = new Array();
+        /*let user = {
+            id : "617",
+            name : "Orly",
+            password : "6666"
+        };
+        localStorage.setItem("login_user", JSON.stringify(user));
+        */
+    $(document).ready(function () { // when the page open in the first time
+        $.ajax({
+            // get the information of all the clothes
+            dataType: "json",			                         //סוג הנתונים שאנחנו מצפים לקבל מהשרת
+            url: "/api/Clothe",			                 //הכתובת לשרת ולפונקציה
+            contentType: "application/json; charset=utf-8",	   //סוג הנתונים שאנחנו שולחים לשרת
+            type: "GET",				                         //סוג הפעולה
+            //data: JSON.stringify({}),			                 //הנתונים עצמם שאנחנו שולחים
+            success: function (data) {                       //פונקציה  שתופעל לאחר הצלחה
+                clothes = data;
+                localStorage.setItem("clothes", JSON.stringify(clothes));
+                init(clothes); // initiate the table of products.
+            },
+            error: function (data) {
+                alert('error, no products in the shop!.');
+            }
+        });
+        function init(cl) { // initiate the table
+            var str;
+            for (i in cl) {
+                $("#table_clothes").append(AddTR(cl[i]));
+            }
+        }
+        function AddTR(cl) {
+            // add new row whith the mutch details to the table
+            return `<tr id='${cl.number}'  value="${cl.number}">
+                <td>
+                     <img id="c_img" src="${cl.img_url}" style=";top:10px;background-color:white; margin:10px;height:200px;width:180px;"/>
+                </td>
+                <td>
+                    <span class="c_category">${cl.category}</span>
+                </td>
+                <td>
+                    <span class="c_details">${cl.details}</span>
+                </td>
+                <td>
+                    <span  class="c_price">${cl.price}</span>
+                </td>
+                <td>
+                    <input type="number" value="0" min="0" max="${cl.amount}"/>
+                </td>
+            </tr>`
+        }
+        });
+
+        function BuyBasket() {
+            // colect details of the purchase
+            let $c_amount = $('input[type=number]');
+            let $c_number = $('#cl.number');
+            let $c_price = $('.c_price');
+            let $c_details = $('.c_details');
+            //let $c_img = $('#c_img');
+            var purchaseListforDB = new Array();
+            let nowDate = Date.now();
+            var purchaseListforLC = new Array();// JSON.parse(localStorage.getItem("orderList"));
+            let isEmpty = true;
+            for (i = 0; i < $c_amount.length; i++) {
+                if ($c_amount[i].value > 0) {
+                    isEmpty = false;
+                    purchaseListforDB.push({
+                            student_id: parseInt((JSON.parse(localStorage.getItem("login_user"))).id),
+                            number: $c_number[i],
+                            purchase_date: nowDate,
+                            amount: $c_amount[i].value
+                        });
+                    purchaseListforLC.push({
+                            student_id: parseInt((JSON.parse(localStorage.getItem("login_user"))).id),
+                            number: $c_number[i],
+                            //img: $c_img[i].src,
+                            details: $c_details[i].innerHTML,
+                            amount: $c_amount[i].value,
+                            price: $c_price[i].innerHTML,
+                            purchase_date: nowDate,
+                        totalPrice: ($c_price[i].innerHTML) * ($c_amount[i].value)
+                        });
+                }
+            }
+            if (isEmpty == true)
+                alert('you must buy at least one product!.');
+            else {
+                 $.ajax({
+                    // add to the db the new orders
+                    dataType: "json",			                         //סוג הנתונים שאנחנו מצפים לקבל מהשרת
+                    url: "/api/Purchase",			                 //הכתובת לשרת ולפונקציה
+                    contentType: "application/json; charset=utf-8",	   //סוג הנתונים שאנחנו שולחים לשרת
+                    type: "POST",				                         //סוג הפעולה		
+                    data: JSON.stringify(purchaseListforDB),			                 //הנתונים עצמם שאנחנו שולחים
+                    success: function (data) {                       //פונקציה  שתופעל לאחר הצלחה
+                        // add to the local storage the new orders
+                        let arrLC = JSON.parse(localStorage.getItem("orderList"));
+                        for (i = 0; i < purchaseListforLC.length; i++){
+                            arrLC.push(purchaseListforLC.pop());
+                        }
+                       // arrLC.push(purchaseListforLC);
+                        localStorage.setItem("orderList", JSON.stringify(arrLC));
+                        window.location.href = "OrderHistory.html.html";
+                    },
+                    error: function (data) {
+                        // if cant add the new orders to the db
+                        localStorage.removeItem("purchaseListforLC");
+                        alert('error, cant execute the order rigth now.');
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="div_up" style="height:50px; background-color:white">
+        <img id="logo" src="picture/o&v logo.png" style="top:10px;background-color:white; margin:10px ;text-align:center; display:block; margin-left:auto; margin-right:auto" />
+    </div>
+    <div id="div_mid" style="height:525px;background-color:white; text-align:center;" align="center"  >
+        <br />
+        <br />
+        <table id="table_clothes" align="center" style="vertical-align:middle;background-color:darkgray; margin:10px;">
+            <tr>
+                <th>
+                  <span>תמונה</span>
+                </th>
+                <th>
+                    <span>קטגוריה</span>
+                </th>
+                <th>
+                    <span>תיאור</span>
+                </th>
+                <th>
+                    <span>מחיר</span>
+                </th>
+                <th>
+                    <span>כמות</span>
+                </th>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <input type="button" id="btn_buy" value="buy" onclick="BuyBasket()" style="background-color:red ; font-size:x-large; text-decoration-color:black; font-family:Britannic;" />
+        <br />
+        <br />
+    </div>
+    <div id="div_down">
+        <!--style="height:50px; background-color:red; "--> <!--position:relative;-->
+    </div>
+</body>
+</html>
