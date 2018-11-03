@@ -13,6 +13,8 @@
         };
         localStorage.setItem("login_user", JSON.stringify(user));
         */
+
+
     $(document).ready(function () { // when the page open in the first time
         $.ajax({
             // get the information of all the clothes
@@ -25,17 +27,26 @@
                 clothes = data;
                 localStorage.setItem("clothes", JSON.stringify(clothes));
                 init(clothes); // initiate the table of products.
+                helloToUser();
             },
             error: function (data) {
                 alert('error, no products in the shop!.');
             }
         });
+
+        function helloToUser() {
+            var user = localStorage.getItem("login_user");
+            user = JSON.parse(user);
+            document.getElementById("pHello").innerHTML = "\n\nHello " + user.name + " ,Enjoy Shopping!";
+        }
+
         function init(cl) { // initiate the table
             var str;
             for (i in cl) {
                 $("#table_clothes").append(AddTR(cl[i]));
             }
         }
+
         function AddTR(cl) {
             // add new row whith the mutch details to the table
             return `<tr id='${cl.number}'  value="${cl.number}">
@@ -124,33 +135,43 @@
     <div id="div_up" style="height:50px; background-color:white">
         <img id="logo" src="picture/o&v logo.png" style="top:10px;background-color:white; margin:10px ;text-align:center; display:block; margin-left:auto; margin-right:auto" />
     </div>
-    <div id="div_mid" style="height:525px;background-color:white; text-align:center;" align="center"  >
-        <br />
-        <br />
-        <table id="table_clothes" align="center" style="vertical-align:middle;background-color:darkgray; margin:10px;">
-            <tr>
-                <th>
-                  <span>תמונה</span>
-                </th>
-                <th>
-                    <span>קטגוריה</span>
-                </th>
-                <th>
-                    <span>תיאור</span>
-                </th>
-                <th>
-                    <span>מחיר</span>
-                </th>
-                <th>
-                    <span>כמות</span>
-                </th>
-            </tr>
-        </table>
-        <br />
-        <br />
-        <input type="button" id="btn_buy" value="buy" onclick="BuyBasket()" style="background-color:red ; font-size:x-large; text-decoration-color:black; font-family:Britannic;" />
-        <br />
-        <br />
+
+    <div>
+        <br /><br />
+        <center>
+            <p id="pHello" style="font:700; font-size:x-large; font-family:'Comic Sans MS'; background-color:red;"></p>
+        </center>
+    </div>
+
+    <div id="div_mid" style="background-color:black; text-align:center;" align="center"  >
+        <center>
+            <br />
+            <br />
+            <table id="table_clothes" align="center" style="vertical-align:middle;background-color:darkgray; margin:10px; font-family:'Times New Roman', Times, serif;">
+                <tr>
+                    <th>
+                        <span>תמונה</span>
+                    </th>
+                    <th>
+                        <span>קטגוריה</span>
+                    </th>
+                    <th>
+                        <span>תיאור</span>
+                    </th>
+                    <th>
+                        <span>מחיר</span>
+                    </th>
+                    <th>
+                        <span>כמות</span>
+                    </th>
+                </tr>
+            </table>
+            <br />
+            <br />
+            <input type="button" id="btn_buy" value="buy" onclick="BuyBasket()" style="background-color:red ; font-size:x-large; text-decoration-color:black; font-family:Britannic;" />
+            <br />
+            <br />
+        </center>
     </div>
     <div id="div_down">
         <!--style="height:50px; background-color:red; "--> <!--position:relative;-->
