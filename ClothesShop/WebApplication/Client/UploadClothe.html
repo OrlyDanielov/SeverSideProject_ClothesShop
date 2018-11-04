@@ -5,40 +5,43 @@
     <title></title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
-    $(document).ready(function () { // when the page open in the first time
-        $.ajax({
-            // get the information of all the clothes
-            dataType: "json",			                         //סוג הנתונים שאנחנו מצפים לקבל מהשרת
-            url: "/api/Clothe",			                 //הכתובת לשרת ולפונקציה
-            contentType: "application/json; charset=utf-8",	   //סוג הנתונים שאנחנו שולחים לשרת
-            type: "GET",				                         //סוג הפעולה
-            //data: JSON.stringify({}),			                 //הנתונים עצמם שאנחנו שולחים
-            success: function (data) {                       //פונקציה  שתופעל לאחר הצלחה
-                clothes = data;
-                localStorage.setItem("clothes", JSON.stringify(clothes));
-                CategoryOptions(clothes);
-            },
-            error: function (data) {
-                alert('error, no products in the shop!.');
-            }
-        });
+    //$(document).ready(function () { // when the page open in the first time
+    //    $.ajax({
+    //        // get the information of all the clothes
+    //        dataType: "json",			                         //סוג הנתונים שאנחנו מצפים לקבל מהשרת
+    //        url: "/api/Clothe",			                 //הכתובת לשרת ולפונקציה
+    //        contentType: "application/json; charset=utf-8",	   //סוג הנתונים שאנחנו שולחים לשרת
+    //        type: "GET",				                         //סוג הפעולה
+    //        //data: JSON.stringify({}),			                 //הנתונים עצמם שאנחנו שולחים
+    //        success: function (data) {                       //פונקציה  שתופעל לאחר הצלחה
+    //            clothes = data;
+    //            localStorage.setItem("clothes", JSON.stringify(clothes));
+  
+    //        },
+    //        error: function (data) {
+    //            alert('error, no products in the shop!.');
+    //        }
+    //    });
+    //    });
 
-        function CategoryOptions(cl) {
-                var str;
-            for (i in cl) {
-                $("#categoryOption").append($("<option>" + $(cl.category) +"</option>"));
-                }
-            }
+    function uploadItem() {
+        var itemDesc = document.getElementById("itemDesc").value;
+        console.log(itemDesc);
+        var pBuyer = document.getElementById("pBuyer").value;
+        console.log(pBuyer);
+        var pSupp = document.getElementById("pSupp").value;
+        console.log(pSupp);
+        var stock = document.getElementById("stock").value;
+        console.log(stock);
+        if (document.getElementById('y').checked) {
+            active = document.getElementById('y').value;
+        } else active = document.getElementById('n').value;
+        console.log(active);
+        var categoryOption = document.getElementById("categoryOption").value;
+        console.log(categoryOption);
 
 
-            //function AddCO(cl) {
-            //    return '<option value='${cl.category}'></option > '
-            //}
-
-
-
-        });
-
+    }
 
 
 
@@ -52,31 +55,54 @@
     <div id="div_mid" style:text-align:center;">
             <div class="container"; style="height:525px; background-color:black; padding: 16px; color:white; font-weight:300">
                 <center>
-                    <form>
-                        <br /><br />
-                        <label for="desc"><b>Product description: </b></label>
-                        <input type="text" placeholder="Describe item" name="desc" required style="text-align:center">
-                        <br /><br />
-                        <label for="priceForBuyer"><b>Price for buyer: </b></label>
-                        <input type="number" step="0.01" placeholder="Enter Price" name="priceForBuyer" required style="text-align:center">
-                        <br /><br />
-                        <label for="priceForSupplier"><b>Price for supplier: </b></label>
-                        <input type="number" step="0.01" placeholder="Enter Price" name="priceForSupplier" required style="text-align:center">
-                        <br /><br />
-                        <label for="stock"><b>Number of items in stock: </b></label>
-                        <input type="number" step="1" placeholder="Enter stock " name="stock" required style="text-align:center">
-                        <br /><br />
-                        <label for="active"><b>Active item?  </b></label>
-                        <input type="radio" value="Yes" name="activey" required style="color:white; text-align:center;" checked>Yes
-                        <input type="radio" value="No" name="activen" required style="text-align:center">No
-                        <br /><br />
-                        <label for="Catrgory"><b>Choose catagory:  </b></label>
-                        <select id="categoryOption" name="categories">
-                            <option>Choose category </option>
-                        </select>
+                    <form style="margin:50px auto">
+                        <p>
+                            <label for="itemImage"><b>Upload image:     </b></label>
+    
+                            <input type="file" id="itemImage" name="itemImage" accept="image/*" required style=" margin-bottom:10px; text-align:center">
+                        </p>
+                        <p>
+                            <label for="desc"><b>Product description: </b></label>
+                            <input type="text" id="itemDesc" placeholder="Describe item" name="desc" required style=" margin-bottom:10px; text-align:center">
+                        </p>
+                        <br />
 
-                        <br /><br />
-                        <button type="submit">Add Product to shop</button>
+                        <p>
+                            <label for="priceForBuyer"><b>Price for buyer: </b></label>
+                            <input type="number" id="pBuyer" step="0.01" placeholder="Enter Price" name="priceForBuyer" required style="text-align:center">
+                        </p>
+                        <br />
+                        <p>
+                            <label for="priceForSupplier"><b>Price for supplier: </b></label>
+                            <input type="number" id="pSupp" step="0.01" placeholder="Enter Price" name="priceForSupplier" required style="text-align:center">
+                        </p>
+                        <br />
+                        <p>
+                            <label for="stock"><b>Number of items in stock: </b></label>
+                            <input type="number" id="stock" step="1" placeholder="Enter stock " name="stock" required style="text-align:center">
+                        </p>
+                        <br />
+                        <div>
+                            <label for="active"><b>Active item?  </b></label>
+                            <input type="radio" id="y" value="Yes" name="active" required style="color:white; text-align:center;" checked>Yes
+                            <input type="radio" id="n" value="No" name="active" required style="text-align:center">No
+                        </div>
+                        <br />
+
+                        <p>
+                            <label for="Catrgory"><b>Choose catagory:  </b></label>
+                            <select id="categoryOption" name="categories" style="text-align:center">
+                                <option>Choose Category </option>
+                                <option>Short_shirts  </option>
+                                <option>Long_shirts</option>
+                                <option>Dresses </option>
+                                <option>Jackets </option>
+                                <option>Skirts</option>
+                            </select>
+                        </p>
+
+                        <br />
+                        <button type="submit" onclick="uploadItem()">Add Product to shop</button>
                     </form>
                 </center>
             </div>
