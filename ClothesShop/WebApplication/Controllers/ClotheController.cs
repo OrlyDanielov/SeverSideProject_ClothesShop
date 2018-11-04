@@ -38,9 +38,22 @@ namespace WebApplication.Controllers
             return "value";
         }
 
+        /*
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Object value)
         {
+
+        }*/
+
+         // POST api/<controller>
+
+         [Route("api/Clothe")]
+        public void Post(Clothe value)
+        {
+            ClothesShopDBConnection DB = new ClothesShopDBConnection();
+           
+            DB.Clothes.Add(value);
+            DB.SaveChanges();
         }
 
         // PUT api/<controller>/5
