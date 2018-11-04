@@ -295,6 +295,7 @@
     <Content Include="Client\images\short_shirts\חולצת פולו זיפר.jpg" />
     <Content Include="Client\images\short_shirts\חולצת פסים עם רקמה.jpg" />
     <Content Include="Client\images\short_shirts\חולצת ריב עם רוכסן.jpg" />
+    <Content Include="Client\LoginPage_Viki.html" />
     <Content Include="Client\OrderHistory.html" />
     <Content Include="Client\picture\castro_logo.png" />
     <Content Include="Client\LogIn.html" />

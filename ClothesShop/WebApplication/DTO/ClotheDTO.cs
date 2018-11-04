@@ -9,8 +9,10 @@ namespace WebApplication.DTO
     {
         public int number;
         public string details;
-        public double? price;
-        public int? amount;
+        public double? priceSupp;
+        public double? priceBuyer;
+        public double cost;
+        public double? stock;
         public string category;
         public string img_url;
 

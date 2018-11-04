@@ -23,8 +23,9 @@ namespace WebApplication.Controllers
             {
                 number = x.number,
                 details = x.details,
-                price = x.cosumer_price,
-                amount = x.amount_in_stock,
+                 priceSupp = x.cosumer_price,
+                 priceBuyer = x.cost_price,
+                 stock = x.amount_in_stock,
                 category = x.category,
                 img_url = x.img_url
             }).ToList();
