@@ -12,6 +12,5 @@ namespace WebApplication.DTO
         public DateTime? purchase_date;
         public int? amount;
         public int purchase_id;
-        public double total; // sum of all the order
     }
 }
